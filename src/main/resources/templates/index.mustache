@@ -42,6 +42,90 @@
       color: #64748b;
       font-size: 1.1rem;
       font-weight: 400;
+      margin-bottom: 24px;
+    }
+
+    .restaurant-showcase {
+      position: relative;
+      max-width: 600px;
+      margin: 0 auto 20px auto;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+      transition: all 0.3s ease;
+    }
+
+    .restaurant-showcase:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
+    }
+
+    .restaurant-image {
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.3s ease;
+    }
+
+    .restaurant-showcase:hover .restaurant-image {
+      transform: scale(1.05);
+    }
+
+    .image-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+      color: white;
+      padding: 24px;
+      text-align: center;
+    }
+
+    .image-overlay h3 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .image-overlay p {
+      font-size: 0.95rem;
+      opacity: 0.9;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    }
+
+    .image-placeholder {
+      width: 100%;
+      height: 280px;
+      background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #64748b;
+      font-size: 1rem;
+      border-radius: 20px;
+      position: relative;
+    }
+
+    .image-loading {
+      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+      background-size: 200% 100%;
+      animation: loading 1.5s infinite;
+    }
+
+    .image-error {
+      background: #fef2f2;
+      color: #dc2626;
+    }
+
+    .loading-icon {
+      width: 32px;
+      height: 32px;
+      margin-bottom: 12px;
+      opacity: 0.6;
     }
 
     .timeline-container {
@@ -52,17 +136,18 @@
 
     .timeline {
       position: relative;
-      padding-left: 30px;
+      padding-left: 40px;
     }
 
     .timeline::before {
       content: '';
       position: absolute;
-      left: 15px;
+      left: 20px;
       top: 0;
       bottom: 0;
-      width: 2px;
-      background: linear-gradient(to bottom, #e2e8f0, #cbd5e1, #e2e8f0);
+      width: 3px;
+      background: linear-gradient(to bottom, #3b82f6, #8b5cf6, #06b6d4);
+      border-radius: 2px;
     }
 
     .day-item {
@@ -74,15 +159,25 @@
     .day-item::before {
       content: '';
       position: absolute;
-      left: -37px;
-      top: 20px;
-      width: 16px;
-      height: 16px;
-      background: #1e293b;
+      left: -26px;
+      top: 24px;
+      width: 12px;
+      height: 12px;
+      background: white;
+      border: 3px solid #3b82f6;
       border-radius: 50%;
-      border: 4px solid white;
-      box-shadow: 0 2px 10px rgba(30, 41, 59, 0.2);
+      box-shadow: 0 0 0 4px white, 0 2px 8px rgba(59, 130, 246, 0.3);
       z-index: 2;
+    }
+
+    .day-item:nth-child(2n)::before {
+      border-color: #8b5cf6;
+      box-shadow: 0 0 0 4px white, 0 2px 8px rgba(139, 92, 246, 0.3);
+    }
+
+    .day-item:nth-child(3n)::before {
+      border-color: #06b6d4;
+      box-shadow: 0 0 0 4px white, 0 2px 8px rgba(6, 182, 212, 0.3);
     }
 
     .day-content {
@@ -282,18 +377,19 @@
 
     /* 스켈레톤 UI */
     .skeleton-timeline {
-      padding-left: 30px;
+      padding-left: 40px;
       position: relative;
     }
 
     .skeleton-timeline::before {
       content: '';
       position: absolute;
-      left: 15px;
+      left: 20px;
       top: 0;
       bottom: 0;
-      width: 2px;
-      background: #e2e8f0;
+      width: 3px;
+      background: linear-gradient(to bottom, #e2e8f0, #cbd5e1, #e2e8f0);
+      border-radius: 2px;
     }
 
     .skeleton-day {
@@ -304,13 +400,14 @@
     .skeleton-day::before {
       content: '';
       position: absolute;
-      left: -37px;
-      top: 20px;
-      width: 16px;
-      height: 16px;
-      background: #e2e8f0;
+      left: -26px;
+      top: 24px;
+      width: 12px;
+      height: 12px;
+      background: white;
+      border: 3px solid #e2e8f0;
       border-radius: 50%;
-      border: 4px solid white;
+      box-shadow: 0 0 0 4px white;
     }
 
     .skeleton-content {
@@ -427,6 +524,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      z-index: 100;
     }
 
     .refresh-btn:hover {
@@ -471,6 +569,14 @@
         font-size: 2.2rem;
       }
 
+      .restaurant-showcase {
+        max-width: 100%;
+      }
+
+      .restaurant-image, .image-placeholder {
+        height: 240px;
+      }
+
       .timeline-container {
         max-width: 100%;
       }
@@ -488,6 +594,22 @@
     }
 
     @media (max-width: 480px) {
+      .restaurant-image, .image-placeholder {
+        height: 200px;
+      }
+
+      .image-overlay {
+        padding: 16px;
+      }
+
+      .image-overlay h3 {
+        font-size: 1.1rem;
+      }
+
+      .image-overlay p {
+        font-size: 0.85rem;
+      }
+
       .day-header {
         flex-direction: column;
         align-items: flex-start;
@@ -508,6 +630,12 @@
         align-self: flex-end;
       }
     }
+
+    @media (max-width: 360px) {
+      .restaurant-image, .image-placeholder {
+        height: 180px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -515,6 +643,28 @@
   <div class="header">
     <h1>대진대학교 식단표</h1>
     <p>이번 주 학생식당 메뉴와 AI 평점을 확인하세요</p>
+
+    <!-- 식당 소개 이미지 -->
+    <div class="restaurant-showcase">
+      <img
+          id="restaurantImage"
+          class="restaurant-image"
+          src="https://www.daejin.ac.kr/sites/daejin/atchmnfl_mngr/diet/2/temp_1691400781943100.jpg"
+          alt="대진대학교 학생식당 내부"
+          referrerpolicy="no-referrer"
+          onload="console.log('이미지 로드 성공!')"
+          onerror="console.log('이미지 로드 실패'); this.style.display='none'; document.getElementById('imageFallback').style.display='flex';"
+      >
+      <div id="imageFallback" class="image-placeholder image-error" style="display: none;">
+        <svg class="loading-icon" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M21,5V4C21,3.45 20.55,3 20,3H4C3.45,3 3,3.45 3,4V5H21M20,6H4V19C4,19.55 4.45,20 5,20H19C19.55,20 20,19.55 20,19V6M16,10V12L14,14L11,11L7,15H17L16,10Z"/>
+        </svg>
+        <span>대진대학교 학생식당</span>
+      </div>
+      <div class="image-overlay">
+        <h3>대진대학교 학생식당</h3>
+      </div>
+    </div>
   </div>
 
   <div id="error" class="error" style="display: none;">
@@ -637,6 +787,9 @@
     '금요일': 'friday'
   };
 
+  // 식당 이미지 URL
+  const RESTAURANT_IMAGE_URL = 'https://www.daejin.ac.kr/sites/daejin/atchmnfl_mngr/diet/2/temp_1691400781943100.jpg';
+
   // 한자가 포함된 문자열을 필터링하는 함수
   function containsChinese(text) {
     if (!text) return false;
@@ -647,6 +800,38 @@
   function filterMenuItems(menuItems) {
     if (!menuItems) return [];
     return menuItems.filter(item => !containsChinese(item));
+  }
+
+  // 식당 소개 이미지 로드 함수
+  function loadRestaurantImage() {
+    console.log('식당 이미지 로딩 시작:', RESTAURANT_IMAGE_URL);
+
+    const container = document.getElementById('restaurantImageContainer');
+    const img = document.createElement('img');
+
+    img.className = 'restaurant-image';
+    img.alt = '대진대학교 학생식당 내부';
+
+    // 이미지 로드 성공
+    img.onload = function() {
+      console.log('이미지 로드 성공!');
+      container.parentNode.replaceChild(img, container);
+    };
+
+    // 이미지 로드 실패
+    img.onerror = function(error) {
+      console.error('이미지 로드 실패:', error);
+      container.className = 'image-placeholder image-error';
+      container.innerHTML = `
+        <svg class="loading-icon" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M21,5V4C21,3.45 20.55,3 20,3H4C3.45,3 3,3.45 3,4V5H21M20,6H4V19C4,19.55 4.45,20 5,20H19C19.55,20 20,19.55 20,19V6M16,10V12L14,14L11,11L7,15H17L16,10Z"/>
+        </svg>
+        <span>이미지를 불러올 수 없습니다</span>
+      `;
+    };
+
+    console.log('이미지 src 설정:', RESTAURANT_IMAGE_URL);
+    img.src = RESTAURANT_IMAGE_URL;
   }
 
   // 별점 생성 함수
@@ -902,6 +1087,7 @@
 
   // 페이지 로드 시 데이터 불러오기
   document.addEventListener('DOMContentLoaded', () => {
+    // 메뉴 데이터 로드
     loadMenuData();
   });
 </script>
