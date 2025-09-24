@@ -5,636 +5,100 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>대진대학교 식단표</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-      background: #f8fafb;
-      color: #1a202c;
-      line-height: 1.6;
-    }
-
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-
-    .header {
-      text-align: center;
-      margin-bottom: 40px;
-      animation: fadeInDown 0.8s ease-out;
-    }
-
-    .header h1 {
-      color: #1a202c;
-      font-size: 2.8rem;
-      font-weight: 800;
-      margin-bottom: 8px;
-      letter-spacing: -0.02em;
-    }
-
-    .header p {
-      color: #64748b;
-      font-size: 1.1rem;
-      font-weight: 400;
-      margin-bottom: 24px;
-    }
-
-    .restaurant-showcase {
-      position: relative;
-      max-width: 600px;
-      margin: 0 auto 20px auto;
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
-      transition: all 0.3s ease;
-    }
-
-    .restaurant-showcase:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
-    }
-
-    .restaurant-image {
-      width: 100%;
-      height: 280px;
-      object-fit: cover;
-      display: block;
-      transition: transform 0.3s ease;
-    }
-
-    .restaurant-showcase:hover .restaurant-image {
-      transform: scale(1.05);
-    }
-
-    .image-overlay {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
-      color: white;
-      padding: 24px;
-      text-align: center;
-    }
-
-    .image-overlay h3 {
-      font-size: 1.3rem;
-      font-weight: 700;
-      margin-bottom: 4px;
-      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    }
-
-    .image-overlay p {
-      font-size: 0.95rem;
-      opacity: 0.9;
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-    }
-
-    .image-placeholder {
-      width: 100%;
-      height: 280px;
-      background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: #64748b;
-      font-size: 1rem;
-      border-radius: 20px;
-      position: relative;
-    }
-
-    .image-loading {
-      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-      background-size: 200% 100%;
-      animation: loading 1.5s infinite;
-    }
-
-    .image-error {
-      background: #fef2f2;
-      color: #dc2626;
-    }
-
-    .loading-icon {
-      width: 32px;
-      height: 32px;
-      margin-bottom: 12px;
-      opacity: 0.6;
-    }
-
-    .timeline-container {
-      position: relative;
-      max-width: 900px;
-      margin: 0 auto;
-    }
-
-    .timeline {
-      position: relative;
-      padding-left: 40px;
-    }
-
-    .timeline::before {
-      content: '';
-      position: absolute;
-      left: 20px;
-      top: 0;
-      bottom: 0;
-      width: 3px;
-      background: linear-gradient(to bottom, #3b82f6, #8b5cf6, #06b6d4);
-      border-radius: 2px;
-    }
-
-    .day-item {
-      position: relative;
-      margin-bottom: 40px;
-      animation: fadeInLeft 0.6s ease-out;
-    }
-
-    .day-item::before {
-      content: '';
-      position: absolute;
-      left: -26px;
-      top: 24px;
-      width: 12px;
-      height: 12px;
-      background: white;
-      border: 3px solid #3b82f6;
-      border-radius: 50%;
-      box-shadow: 0 0 0 4px white, 0 2px 8px rgba(59, 130, 246, 0.3);
-      z-index: 2;
-    }
-
-    .day-item:nth-child(2n)::before {
-      border-color: #8b5cf6;
-      box-shadow: 0 0 0 4px white, 0 2px 8px rgba(139, 92, 246, 0.3);
-    }
-
-    .day-item:nth-child(3n)::before {
-      border-color: #06b6d4;
-      box-shadow: 0 0 0 4px white, 0 2px 8px rgba(6, 182, 212, 0.3);
-    }
-
-    .day-content {
-      background: white;
-      border-radius: 16px;
-      padding: 24px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-      border: 1px solid #f1f5f9;
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .day-content::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, #3b82f6, #8b5cf6, #06b6d4);
-    }
-
-    .day-content:hover {
-      transform: translateX(8px);
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-    }
-
-    .day-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid #f1f5f9;
-    }
-
-    .day-title {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: #1a202c;
-    }
-
-    .rating-section {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 16px;
-      background: #f8fafc;
-      border-radius: 20px;
-      border: 1px solid #e2e8f0;
-      transition: all 0.3s ease;
-    }
-
-    .rating-section.loading {
-      background: #f1f5f9;
-    }
-
-    .rating-section.loaded {
-      background: linear-gradient(135deg, #fef3c7, #fde68a);
-      border-color: #f59e0b;
-    }
-
-    .rating-section.error {
-      background: #fef2f2;
-      border-color: #fca5a5;
-    }
-
-    .stars {
-      display: flex;
-      gap: 2px;
-    }
-
-    .star {
-      width: 16px;
-      height: 16px;
-      fill: #e2e8f0;
-      transition: all 0.3s ease;
-    }
-
-    .star.filled {
-      fill: #fbbf24;
-      filter: drop-shadow(0 1px 2px rgba(251, 191, 36, 0.3));
-    }
-
-    .rating-text {
-      font-size: 0.85rem;
-      color: #64748b;
-      font-weight: 500;
-      min-width: 80px;
-    }
-
-    .rating-text.loaded {
-      color: #92400e;
-      font-weight: 600;
-    }
-
-    .rating-text.error {
-      color: #dc2626;
-    }
-
-    .restaurants-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 16px;
-    }
-
-    .restaurant-card {
-      background: #fafbfc;
-      border: 1px solid #e2e8f0;
-      border-radius: 12px;
-      padding: 20px;
-      transition: all 0.2s ease;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .restaurant-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, #3b82f6, transparent);
-      transform: translateX(-100%);
-      transition: transform 0.3s ease;
-    }
-
-    .restaurant-card:hover::before {
-      transform: translateX(100%);
-    }
-
-    .restaurant-card:hover {
-      background: white;
-      border-color: #cbd5e1;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    }
-
-    .restaurant-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-    }
-
-    .restaurant-title {
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: #374151;
-    }
-
-    .price-badge {
-      background: linear-gradient(135deg, #1e293b, #334155);
-      color: white;
-      padding: 6px 12px;
-      border-radius: 16px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-    }
-
-    .menu-items {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-
-    .menu-item {
-      background: white;
-      padding: 6px 12px;
-      border-radius: 16px;
-      font-size: 0.85rem;
-      color: #4b5563;
-      border: 1px solid #e5e7eb;
-      transition: all 0.2s ease;
-      cursor: default;
-    }
-
-    .menu-item:hover {
-      background: #1e293b;
-      color: white;
-      border-color: #1e293b;
-      transform: translateY(-1px);
-    }
-
-    .no-menu {
-      text-align: center;
-      color: #9ca3af;
-      font-style: italic;
-      padding: 40px;
-      background: #f9fafb;
-      border: 2px dashed #d1d5db;
-      border-radius: 12px;
-    }
-
-    /* 스켈레톤 UI */
-    .skeleton-timeline {
-      padding-left: 40px;
-      position: relative;
-    }
-
-    .skeleton-timeline::before {
-      content: '';
-      position: absolute;
-      left: 20px;
-      top: 0;
-      bottom: 0;
-      width: 3px;
-      background: linear-gradient(to bottom, #e2e8f0, #cbd5e1, #e2e8f0);
-      border-radius: 2px;
-    }
-
-    .skeleton-day {
-      position: relative;
-      margin-bottom: 40px;
-    }
-
-    .skeleton-day::before {
-      content: '';
-      position: absolute;
-      left: -26px;
-      top: 24px;
-      width: 12px;
-      height: 12px;
-      background: white;
-      border: 3px solid #e2e8f0;
-      border-radius: 50%;
-      box-shadow: 0 0 0 4px white;
-    }
-
-    .skeleton-content {
-      background: white;
-      border-radius: 16px;
-      padding: 24px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-      border: 1px solid #f1f5f9;
-    }
-
-    .skeleton {
-      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-      background-size: 200% 100%;
-      animation: loading 1.5s infinite;
-      border-radius: 8px;
-    }
-
-    @keyframes loading {
-      0% { background-position: 200% 0; }
-      100% { background-position: -200% 0; }
-    }
-
-    .skeleton-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid #f1f5f9;
-    }
-
-    .skeleton-title {
-      height: 28px;
-      width: 100px;
-      border-radius: 14px;
-    }
-
-    .skeleton-rating {
-      height: 24px;
-      width: 120px;
-      border-radius: 12px;
-    }
-
-    .skeleton-restaurants {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 16px;
-    }
-
-    .skeleton-restaurant {
-      background: #fafbfc;
-      border: 1px solid #e2e8f0;
-      border-radius: 12px;
-      padding: 20px;
-    }
-
-    .skeleton-restaurant-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-    }
-
-    .skeleton-restaurant-title {
-      height: 20px;
-      width: 80px;
-      border-radius: 10px;
-    }
-
-    .skeleton-price {
-      height: 24px;
-      width: 60px;
-      border-radius: 12px;
-    }
-
-    .skeleton-menu-items {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-
-    .skeleton-menu-item {
-      height: 28px;
-      border-radius: 14px;
-    }
-
-    .skeleton-menu-item:nth-child(1) { width: 70px; }
-    .skeleton-menu-item:nth-child(2) { width: 55px; }
-    .skeleton-menu-item:nth-child(3) { width: 65px; }
-    .skeleton-menu-item:nth-child(4) { width: 45px; }
-
-    .error {
-      text-align: center;
-      color: white;
-      background: #ef4444;
-      padding: 20px;
-      border-radius: 12px;
-      margin: 20px 0;
-    }
-
-    .refresh-btn {
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
-      width: 56px;
-      height: 56px;
-      background: linear-gradient(135deg, #1e293b, #334155);
-      border: none;
-      border-radius: 50%;
-      color: white;
-      cursor: pointer;
-      box-shadow: 0 8px 25px rgba(30, 41, 59, 0.3);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 100;
-    }
-
-    .refresh-btn:hover {
-      transform: scale(1.1) rotate(180deg);
-      box-shadow: 0 12px 35px rgba(30, 41, 59, 0.4);
-    }
-
-    .refresh-icon {
-      width: 20px;
-      height: 20px;
-      fill: currentColor;
-    }
-
-    @keyframes fadeInDown {
-      from {
-        opacity: 0;
-        transform: translateY(-30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @keyframes fadeInLeft {
-      from {
-        opacity: 0;
-        transform: translateX(-30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateX(0);
-      }
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f7fa; background-image: radial-gradient(circle at 20% 30%, rgba(99, 102, 241, 0.05) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(168, 85, 247, 0.04) 0%, transparent 50%); color: #1a202c; line-height: 1.6; min-height: 100vh; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+    .header { text-align: center; margin-bottom: 40px; animation: fadeInDown 0.8s ease; }
+    .header h1 { font-size: 2.8rem; font-weight: 800; margin-bottom: 8px; color: #1a202c; }
+    .header p { color: #64748b; font-size: 1.1rem; margin-bottom: 24px; }
+
+    .restaurant-showcase { position: relative; max-width: 600px; margin: 0 auto 20px; border-radius: 20px; overflow: hidden; box-shadow: 0 12px 40px rgba(0,0,0,0.1); transition: all 0.3s ease; }
+    .restaurant-showcase:hover { transform: translateY(-4px); box-shadow: 0 20px 60px rgba(0,0,0,0.15); }
+    .restaurant-image { width: 100%; height: 280px; object-fit: cover; display: block; transition: transform 0.3s ease; }
+    .restaurant-showcase:hover .restaurant-image { transform: scale(1.05); }
+    .image-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.7)); color: white; padding: 24px; text-align: center; }
+    .image-overlay h3 { font-size: 1.3rem; font-weight: 700; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+
+    .day-tabs { display: flex; justify-content: center; gap: 8px; margin-bottom: 30px; }
+    .day-tab { background: white; border: 2px solid #e2e8f0; color: #64748b; padding: 12px 24px; border-radius: 30px; cursor: pointer; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .day-tab:hover { border-color: #6366f1; transform: translateY(-2px); box-shadow: 0 4px 16px rgba(99,102,241,0.2); }
+    .day-tab.active { background: #6366f1; color: white; border-color: #6366f1; transform: translateY(-2px); box-shadow: 0 8px 25px rgba(99,102,241,0.4); }
+
+    .day-content { background: white; border-radius: 16px; padding: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid #f1f5f9; animation: fadeIn 0.5s ease; }
+    .day-content::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: #6366f1; }
+    .day-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid #f1f5f9; }
+    .day-title { font-size: 1.5rem; font-weight: 700; color: #1a202c; }
+
+    .rating-section { display: flex; align-items: center; gap: 8px; padding: 8px 16px; background: #f8fafc; border-radius: 20px; border: 1px solid #e2e8f0; transition: all 0.3s ease; }
+    .rating-section.loading { background: #f1f5f9; }
+    .rating-section.loaded { background: #fef3c7; border-color: #f59e0b; }
+    .rating-section.error { background: #fef2f2; border-color: #fca5a5; }
+    .stars { display: flex; gap: 2px; }
+    .star { width: 16px; height: 16px; fill: #e2e8f0; transition: all 0.3s ease; }
+    .star.filled { fill: #fbbf24; filter: drop-shadow(0 1px 2px rgba(251,191,36,0.3)); }
+    .rating-text { font-size: 0.85rem; color: #64748b; font-weight: 500; min-width: 80px; }
+    .rating-text.loaded { color: #92400e; font-weight: 600; }
+    .rating-text.error { color: #dc2626; }
+
+    .restaurants-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
+    .restaurant-card { background: white; border-radius: 16px; padding: 20px; transition: all 0.3s ease; box-shadow: 0 4px 20px rgba(0,0,0,0.06); border: 1px solid #f1f5f9; }
+    .restaurant-card:hover { transform: translateY(-4px); box-shadow: 0 8px 32px rgba(0,0,0,0.1); }
+    .restaurant-header { text-align: center; margin-bottom: 16px; }
+    .restaurant-title { font-size: 1.2rem; font-weight: 700; color: #1e293b; margin-bottom: 8px; }
+    .price-badge { background: #6366f1; color: white; padding: 8px 16px; border-radius: 20px; font-size: 0.9rem; font-weight: 600; display: inline-block; }
+
+    .tray-container { display: flex; justify-content: center; margin: 20px 0; }
+    .food-tray { width: 280px; height: 200px; background: #f8fafc; border: 2px solid #cbd5e1; border-radius: 12px; display: grid; grid-template-columns: 2fr 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 3px; padding: 8px; }
+    .menu-section { background: white; border: 1px solid #d1d5db; padding: 6px; display: flex; flex-direction: column; justify-content: flex-start; align-items: center; border-radius: 6px; }
+    .menu-section.main-dish { grid-row: span 2; border-radius: 8px 4px 4px 8px; }
+    .menu-item-text { background: #ede9fe; border-radius: 8px; padding: 3px 6px; margin: 2px 0; border: 1px solid #c4b5fd; transition: all 0.2s ease; font-size: 0.7rem; text-align: center; width: 100%; word-break: break-word; line-height: 1.2; min-height: 20px; display: flex; align-items: center; justify-content: center; color: #5b21b6; font-weight: 500; }
+    .menu-item-text:hover { background: #6366f1; color: white; transform: scale(1.02); }
+    .menu-item-text.empty { background: transparent; color: #9ca3af; border: 1px dashed #d1d5db; font-style: italic; }
+    .no-menu { text-align: center; color: #9ca3af; font-style: italic; padding: 40px; background: #f9fafb; border: 2px dashed #d1d5db; border-radius: 16px; }
+
+    .skeleton { background: white; border-radius: 16px; padding: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid #f1f5f9; }
+    .skeleton-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid #f1f5f9; }
+    .skeleton-loading { background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%); background-size: 200% 100%; animation: loading 1.5s infinite; border-radius: 8px; }
+    .skeleton-title { height: 28px; width: 100px; border-radius: 14px; }
+    .skeleton-rating { height: 24px; width: 120px; border-radius: 12px; }
+    .skeleton-restaurants { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
+    .skeleton-restaurant { background: white; border-radius: 16px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+    .skeleton-restaurant-header { text-align: center; margin-bottom: 16px; }
+    .skeleton-restaurant-title { height: 20px; width: 120px; border-radius: 10px; margin: 0 auto 8px; }
+    .skeleton-price { height: 24px; width: 80px; border-radius: 12px; margin: 0 auto; }
+    .skeleton-tray { width: 280px; height: 200px; background: #f8fafc; border: 2px solid #cbd5e1; border-radius: 12px; display: grid; grid-template-columns: 2fr 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 3px; padding: 8px; margin: 20px auto; }
+    .skeleton-menu-section { background: white; border: 1px solid #d1d5db; border-radius: 6px; padding: 6px; display: flex; flex-direction: column; gap: 2px; }
+    .skeleton-menu-item-text { height: 16px; border-radius: 6px; margin: 1px 0; }
+
+    .refresh-btn { position: fixed; bottom: 30px; right: 30px; width: 56px; height: 56px; background: #6366f1; border: none; border-radius: 50%; color: white; cursor: pointer; box-shadow: 0 8px 25px rgba(99,102,241,0.4); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; align-items: center; justify-content: center; z-index: 100; }
+    .refresh-btn:hover { transform: scale(1.1) rotate(180deg); box-shadow: 0 12px 35px rgba(99,102,241,0.5); }
+    .refresh-icon { width: 20px; height: 20px; fill: currentColor; }
+
+    @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+    @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
     @media (max-width: 768px) {
-      .container {
-        padding: 15px;
-      }
-
-      .header h1 {
-        font-size: 2.2rem;
-      }
-
-      .restaurant-showcase {
-        max-width: 100%;
-      }
-
-      .restaurant-image, .image-placeholder {
-        height: 240px;
-      }
-
-      .timeline-container {
-        max-width: 100%;
-      }
-
-      .restaurants-grid, .skeleton-restaurants {
-        grid-template-columns: 1fr;
-      }
-
-      .refresh-btn {
-        bottom: 20px;
-        right: 20px;
-        width: 50px;
-        height: 50px;
-      }
+      .container { padding: 15px; }
+      .header h1 { font-size: 2.2rem; }
+      .restaurant-showcase { max-width: 100%; }
+      .restaurant-image { height: 240px; }
+      .day-tabs { flex-wrap: wrap; }
+      .day-tab { padding: 10px 20px; font-size: 0.9rem; }
+      .restaurants-grid { grid-template-columns: 1fr; }
+      .food-tray { width: 260px; height: 180px; }
+      .menu-item-text { font-size: 0.65rem; padding: 2px 4px; }
+      .refresh-btn { bottom: 20px; right: 20px; width: 50px; height: 50px; }
     }
 
     @media (max-width: 480px) {
-      .restaurant-image, .image-placeholder {
-        height: 200px;
-      }
-
-      .image-overlay {
-        padding: 16px;
-      }
-
-      .image-overlay h3 {
-        font-size: 1.1rem;
-      }
-
-      .image-overlay p {
-        font-size: 0.85rem;
-      }
-
-      .day-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 12px;
-      }
-
-      .rating-section {
-        align-self: flex-end;
-      }
-
-      .restaurant-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
-      }
-
-      .price-badge {
-        align-self: flex-end;
-      }
-    }
-
-    @media (max-width: 360px) {
-      .restaurant-image, .image-placeholder {
-        height: 180px;
-      }
+      .restaurant-image { height: 200px; }
+      .image-overlay { padding: 16px; }
+      .image-overlay h3 { font-size: 1.1rem; }
+      .day-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+      .rating-section { align-self: flex-end; }
+      .food-tray { width: 240px; height: 160px; }
+      .menu-item-text { font-size: 0.6rem; padding: 2px 3px; }
     }
   </style>
 </head>
@@ -644,450 +108,276 @@
     <h1>대진대학교 식단표</h1>
     <p>이번 주 학생식당 메뉴와 AI 평점을 확인하세요</p>
 
-    <!-- 식당 소개 이미지 -->
     <div class="restaurant-showcase">
-      <img
-          id="restaurantImage"
-          class="restaurant-image"
-          src="https://www.daejin.ac.kr/sites/daejin/atchmnfl_mngr/diet/2/temp_1691400781943100.jpg"
-          alt="대진대학교 학생식당 내부"
-          referrerpolicy="no-referrer"
-          onload="console.log('이미지 로드 성공!')"
-          onerror="console.log('이미지 로드 실패'); this.style.display='none'; document.getElementById('imageFallback').style.display='flex';"
-      >
-      <div id="imageFallback" class="image-placeholder image-error" style="display: none;">
-        <svg class="loading-icon" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M21,5V4C21,3.45 20.55,3 20,3H4C3.45,3 3,3.45 3,4V5H21M20,6H4V19C4,19.55 4.45,20 5,20H19C19.55,20 20,19.55 20,19V6M16,10V12L14,14L11,11L7,15H17L16,10Z"/>
-        </svg>
-        <span>대진대학교 학생식당</span>
-      </div>
+      <img class="restaurant-image" src="https://www.daejin.ac.kr/sites/daejin/atchmnfl_mngr/diet/2/temp_1691400781943100.jpg" alt="대진대학교 학생식당 내부">
       <div class="image-overlay">
         <h3>대진대학교 학생식당</h3>
       </div>
     </div>
   </div>
 
-  <div id="error" class="error" style="display: none;">
-    <p>식단 정보를 불러오는데 실패했습니다. 다시 시도해 주세요.</p>
+  <div class="day-tabs">
+    <div class="day-tab" data-day="월요일">월</div>
+    <div class="day-tab" data-day="화요일">화</div>
+    <div class="day-tab" data-day="수요일">수</div>
+    <div class="day-tab" data-day="목요일">목</div>
+    <div class="day-tab" data-day="금요일">금</div>
   </div>
 
-  <div class="timeline-container">
-    <!-- 스켈레톤 UI -->
-    <div id="skeleton" class="skeleton-timeline">
-      <div class="skeleton-day">
-        <div class="skeleton-content">
-          <div class="skeleton-header">
-            <div class="skeleton skeleton-title"></div>
-            <div class="skeleton skeleton-rating"></div>
+  <div id="contentContainer">
+    <div id="skeleton" class="skeleton">
+      <div class="skeleton-header">
+        <div class="skeleton-loading skeleton-title"></div>
+        <div class="skeleton-loading skeleton-rating"></div>
+      </div>
+      <div class="skeleton-restaurants">
+        <div class="skeleton-restaurant">
+          <div class="skeleton-restaurant-header">
+            <div class="skeleton-loading skeleton-restaurant-title"></div>
+            <div class="skeleton-loading skeleton-price"></div>
           </div>
-          <div class="skeleton-restaurants">
-            <div class="skeleton-restaurant">
-              <div class="skeleton-restaurant-header">
-                <div class="skeleton skeleton-restaurant-title"></div>
-                <div class="skeleton skeleton-price"></div>
-              </div>
-              <div class="skeleton-menu-items">
-                <div class="skeleton skeleton-menu-item"></div>
-                <div class="skeleton skeleton-menu-item"></div>
-                <div class="skeleton skeleton-menu-item"></div>
-                <div class="skeleton skeleton-menu-item"></div>
-              </div>
-            </div>
-            <div class="skeleton-restaurant">
-              <div class="skeleton-restaurant-header">
-                <div class="skeleton skeleton-restaurant-title"></div>
-                <div class="skeleton skeleton-price"></div>
-              </div>
-              <div class="skeleton-menu-items">
-                <div class="skeleton skeleton-menu-item"></div>
-                <div class="skeleton skeleton-menu-item"></div>
-                <div class="skeleton skeleton-menu-item"></div>
-              </div>
-            </div>
+          <div class="skeleton-tray">
+            <div class="skeleton-menu-section"><div class="skeleton-loading skeleton-menu-item-text"></div><div class="skeleton-loading skeleton-menu-item-text"></div></div>
+            <div class="skeleton-menu-section"><div class="skeleton-loading skeleton-menu-item-text"></div></div>
+            <div class="skeleton-menu-section"><div class="skeleton-loading skeleton-menu-item-text"></div></div>
+            <div class="skeleton-menu-section"><div class="skeleton-loading skeleton-menu-item-text"></div></div>
+            <div class="skeleton-menu-section"><div class="skeleton-loading skeleton-menu-item-text"></div></div>
           </div>
         </div>
-      </div>
-
-      <div class="skeleton-day">
-        <div class="skeleton-content">
-          <div class="skeleton-header">
-            <div class="skeleton skeleton-title"></div>
-            <div class="skeleton skeleton-rating"></div>
+        <div class="skeleton-restaurant">
+          <div class="skeleton-restaurant-header">
+            <div class="skeleton-loading skeleton-restaurant-title"></div>
+            <div class="skeleton-loading skeleton-price"></div>
           </div>
-          <div class="skeleton-restaurants">
-            <div class="skeleton-restaurant">
-              <div class="skeleton-restaurant-header">
-                <div class="skeleton skeleton-restaurant-title"></div>
-                <div class="skeleton skeleton-price"></div>
-              </div>
-              <div class="skeleton-menu-items">
-                <div class="skeleton skeleton-menu-item"></div>
-                <div class="skeleton skeleton-menu-item"></div>
-                <div class="skeleton skeleton-menu-item"></div>
-                <div class="skeleton skeleton-menu-item"></div>
-              </div>
-            </div>
-            <div class="skeleton-restaurant">
-              <div class="skeleton-restaurant-header">
-                <div class="skeleton skeleton-restaurant-title"></div>
-                <div class="skeleton skeleton-price"></div>
-              </div>
-              <div class="skeleton-menu-items">
-                <div class="skeleton skeleton-menu-item"></div>
-                <div class="skeleton skeleton-menu-item"></div>
-                <div class="skeleton skeleton-menu-item"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="skeleton-day">
-        <div class="skeleton-content">
-          <div class="skeleton-header">
-            <div class="skeleton skeleton-title"></div>
-            <div class="skeleton skeleton-rating"></div>
-          </div>
-          <div class="skeleton-restaurants">
-            <div class="skeleton-restaurant">
-              <div class="skeleton-restaurant-header">
-                <div class="skeleton skeleton-restaurant-title"></div>
-                <div class="skeleton skeleton-price"></div>
-              </div>
-              <div class="skeleton-menu-items">
-                <div class="skeleton skeleton-menu-item"></div>
-                <div class="skeleton skeleton-menu-item"></div>
-                <div class="skeleton skeleton-menu-item"></div>
-                <div class="skeleton skeleton-menu-item"></div>
-              </div>
-            </div>
+          <div class="skeleton-tray">
+            <div class="skeleton-menu-section"><div class="skeleton-loading skeleton-menu-item-text"></div></div>
+            <div class="skeleton-menu-section"><div class="skeleton-loading skeleton-menu-item-text"></div></div>
+            <div class="skeleton-menu-section"><div class="skeleton-loading skeleton-menu-item-text"></div></div>
+            <div class="skeleton-menu-section"><div class="skeleton-loading skeleton-menu-item-text"></div></div>
+            <div class="skeleton-menu-section"><div class="skeleton-loading skeleton-menu-item-text"></div></div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- 실제 메뉴 컨테이너 -->
-    <div id="menuContainer" class="timeline" style="display: none;"></div>
+    <div id="dayContent" class="day-content" style="display: none;"></div>
   </div>
 </div>
 
 <button class="refresh-btn" onclick="loadMenuData()">
   <svg class="refresh-icon" viewBox="0 0 24 24">
-    <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+    <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
   </svg>
 </button>
 
 <script>
-  // 요일명을 API 엔드포인트 매핑
-  const dayApiMapping = {
-    '월요일': 'monday',
-    '화요일': 'tuesday',
-    '수요일': 'wednesday',
-    '목요일': 'thursday',
-    '금요일': 'friday'
-  };
+  const dayApiMapping = { '월요일': 'monday', '화요일': 'tuesday', '수요일': 'wednesday', '목요일': 'thursday', '금요일': 'friday' };
+  let menuData = null;
+  let currentDay = '';
 
-  // 식당 이미지 URL
-  const RESTAURANT_IMAGE_URL = 'https://www.daejin.ac.kr/sites/daejin/atchmnfl_mngr/diet/2/temp_1691400781943100.jpg';
-
-  // 한자가 포함된 문자열을 필터링하는 함수
-  function containsChinese(text) {
-    if (!text) return false;
-    return /[\u4e00-\u9fff]/.test(text);
+  function getTodayKorean() {
+    const days = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
+    const today = days[new Date().getDay()];
+    return dayApiMapping[today] ? today : '월요일';
   }
 
-  // 메뉴 아이템을 필터링하는 함수
   function filterMenuItems(menuItems) {
     if (!menuItems) return [];
-    return menuItems.filter(item => !containsChinese(item));
+    return menuItems.filter(item => !/[\u4e00-\u9fff]/.test(item));
   }
 
-  // 식당 소개 이미지 로드 함수
-  function loadRestaurantImage() {
-    console.log('식당 이미지 로딩 시작:', RESTAURANT_IMAGE_URL);
-
-    const container = document.getElementById('restaurantImageContainer');
-    const img = document.createElement('img');
-
-    img.className = 'restaurant-image';
-    img.alt = '대진대학교 학생식당 내부';
-
-    // 이미지 로드 성공
-    img.onload = function() {
-      console.log('이미지 로드 성공!');
-      container.parentNode.replaceChild(img, container);
-    };
-
-    // 이미지 로드 실패
-    img.onerror = function(error) {
-      console.error('이미지 로드 실패:', error);
-      container.className = 'image-placeholder image-error';
-      container.innerHTML = `
-        <svg class="loading-icon" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M21,5V4C21,3.45 20.55,3 20,3H4C3.45,3 3,3.45 3,4V5H21M20,6H4V19C4,19.55 4.45,20 5,20H19C19.55,20 20,19.55 20,19V6M16,10V12L14,14L11,11L7,15H17L16,10Z"/>
-        </svg>
-        <span>이미지를 불러올 수 없습니다</span>
-      `;
-    };
-
-    console.log('이미지 src 설정:', RESTAURANT_IMAGE_URL);
-    img.src = RESTAURANT_IMAGE_URL;
+  function distributeMenuItems(menuItems) {
+    const sections = [[], [], [], [], []];
+    if (!menuItems || menuItems.length === 0) return sections;
+    menuItems.forEach((item, index) => sections[index % 5].push(item));
+    return sections;
   }
 
-  // 별점 생성 함수
   function createStars(rating = 0) {
     const starsContainer = document.createElement('div');
     starsContainer.className = 'stars';
-
     for (let i = 1; i <= 5; i++) {
       const star = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
       star.setAttribute('class', `star ${i <= rating ? 'filled' : ''}`);
       star.setAttribute('viewBox', '0 0 24 24');
-
       const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
       path.setAttribute('d', 'M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z');
-
       star.appendChild(path);
       starsContainer.appendChild(star);
     }
-
     return starsContainer;
   }
 
-  // 별점 업데이트 함수
   function updateStars(starsContainer, rating) {
     const stars = starsContainer.querySelectorAll('.star');
     stars.forEach((star, index) => {
-      if (index < rating) {
-        star.classList.add('filled');
-      } else {
-        star.classList.remove('filled');
-      }
+      if (index < rating) star.classList.add('filled');
+      else star.classList.remove('filled');
     });
   }
 
-  // 식단 데이터를 렌더링하는 함수
-  function renderMenuData(data) {
-    const container = document.getElementById('menuContainer');
+  function renderDayContent(dayData) {
+    const container = document.getElementById('dayContent');
     container.innerHTML = '';
 
-    if (!data || !data.menuDataList) {
-      showError();
-      return;
-    }
+    const dayHeader = document.createElement('div');
+    dayHeader.className = 'day-header';
 
-    data.menuDataList.forEach((day, index) => {
-      const dayItem = document.createElement('div');
-      dayItem.className = 'day-item';
-      dayItem.style.animationDelay = `${index * 0.1}s`;
-      dayItem.setAttribute('data-day', day.dotw); // 요일 정보 저장
+    const dayTitle = document.createElement('div');
+    dayTitle.className = 'day-title';
+    dayTitle.textContent = dayData.dotw;
 
-      const dayContent = document.createElement('div');
-      dayContent.className = 'day-content';
+    const ratingSection = document.createElement('div');
+    ratingSection.className = 'rating-section loading';
 
-      // 헤더 (요일 + 평점)
-      const dayHeader = document.createElement('div');
-      dayHeader.className = 'day-header';
+    const stars = createStars(0);
+    const ratingText = document.createElement('span');
+    ratingText.className = 'rating-text';
+    ratingText.textContent = 'AI 평가 중...';
 
-      const dayTitle = document.createElement('div');
-      dayTitle.className = 'day-title';
-      dayTitle.textContent = day.dotw;
+    ratingSection.appendChild(stars);
+    ratingSection.appendChild(ratingText);
+    dayHeader.appendChild(dayTitle);
+    dayHeader.appendChild(ratingSection);
+    container.appendChild(dayHeader);
 
-      // AI 평점 섹션 (초기 로딩 상태)
-      const ratingSection = document.createElement('div');
-      ratingSection.className = 'rating-section loading';
+    const restaurantsGrid = document.createElement('div');
+    restaurantsGrid.className = 'restaurants-grid';
 
-      const stars = createStars(0); // 초기값 0
-      const ratingText = document.createElement('span');
-      ratingText.className = 'rating-text';
-      ratingText.textContent = 'AI 평가 중...';
+    if (!dayData.menus || dayData.menus.length === 0) {
+      const noMenu = document.createElement('div');
+      noMenu.className = 'no-menu';
+      noMenu.textContent = '운영하지 않습니다';
+      restaurantsGrid.appendChild(noMenu);
+    } else {
+      dayData.menus.forEach(menu => {
+        if (!menu.title) return;
 
-      ratingSection.appendChild(stars);
-      ratingSection.appendChild(ratingText);
+        const restaurantCard = document.createElement('div');
+        restaurantCard.className = 'restaurant-card';
 
-      dayHeader.appendChild(dayTitle);
-      dayHeader.appendChild(ratingSection);
-      dayContent.appendChild(dayHeader);
+        const restaurantHeader = document.createElement('div');
+        restaurantHeader.className = 'restaurant-header';
 
-      // 식당 그리드
-      const restaurantsGrid = document.createElement('div');
-      restaurantsGrid.className = 'restaurants-grid';
+        const restaurantTitle = document.createElement('div');
+        restaurantTitle.className = 'restaurant-title';
+        restaurantTitle.textContent = menu.title;
+        restaurantHeader.appendChild(restaurantTitle);
 
-      if (!day.menus || day.menus.length === 0) {
-        const noMenu = document.createElement('div');
-        noMenu.className = 'no-menu';
-        noMenu.textContent = '운영하지 않습니다';
-        restaurantsGrid.appendChild(noMenu);
-      } else {
-        day.menus.forEach(menu => {
-          if (!menu.title) return;
+        if (menu.price) {
+          const priceBadge = document.createElement('div');
+          priceBadge.className = 'price-badge';
+          priceBadge.textContent = `${menu.price}원`;
+          restaurantHeader.appendChild(priceBadge);
+        }
 
-          const restaurantCard = document.createElement('div');
-          restaurantCard.className = 'restaurant-card';
+        restaurantCard.appendChild(restaurantHeader);
 
-          const restaurantHeader = document.createElement('div');
-          restaurantHeader.className = 'restaurant-header';
+        const trayContainer = document.createElement('div');
+        trayContainer.className = 'tray-container';
 
-          const restaurantTitle = document.createElement('div');
-          restaurantTitle.className = 'restaurant-title';
-          restaurantTitle.textContent = menu.title;
+        const foodTray = document.createElement('div');
+        foodTray.className = 'food-tray';
 
-          restaurantHeader.appendChild(restaurantTitle);
+        const filteredItems = filterMenuItems(menu.menuItems);
+        const distributedMenus = distributeMenuItems(filteredItems);
 
-          if (menu.price) {
-            const priceBadge = document.createElement('div');
-            priceBadge.className = 'price-badge';
-            priceBadge.textContent = `${menu.price}원`;
-            restaurantHeader.appendChild(priceBadge);
-          }
+        distributedMenus.forEach((sectionItems, index) => {
+          const menuSection = document.createElement('div');
+          menuSection.className = `menu-section ${index === 0 ? 'main-dish' : ''}`;
 
-          restaurantCard.appendChild(restaurantHeader);
-
-          const menuItems = document.createElement('div');
-          menuItems.className = 'menu-items';
-
-          const filteredItems = filterMenuItems(menu.menuItems);
-          if (filteredItems.length > 0) {
-            filteredItems.forEach(item => {
+          if (sectionItems.length > 0) {
+            sectionItems.forEach(item => {
               const menuItem = document.createElement('div');
-              menuItem.className = 'menu-item';
+              menuItem.className = 'menu-item-text';
               menuItem.textContent = item;
-              menuItems.appendChild(menuItem);
+              menuSection.appendChild(menuItem);
             });
           } else {
-            const noItems = document.createElement('div');
-            noItems.className = 'menu-item';
-            noItems.textContent = '메뉴 정보 없음';
-            noItems.style.color = '#9ca3af';
-            menuItems.appendChild(noItems);
+            const emptyItem = document.createElement('div');
+            emptyItem.className = 'menu-item-text empty';
+            emptyItem.textContent = '-';
+            menuSection.appendChild(emptyItem);
           }
 
-          restaurantCard.appendChild(menuItems);
-          restaurantsGrid.appendChild(restaurantCard);
+          foodTray.appendChild(menuSection);
         });
-      }
 
-      dayContent.appendChild(restaurantsGrid);
-      dayItem.appendChild(dayContent);
-      container.appendChild(dayItem);
-    });
+        trayContainer.appendChild(foodTray);
+        restaurantCard.appendChild(trayContainer);
+        restaurantsGrid.appendChild(restaurantCard);
+      });
+    }
+
+    container.appendChild(restaurantsGrid);
+    loadAiRating(dayData.dotw);
   }
 
-  // AI 평점 API 호출 함수
   async function loadAiRating(dayName) {
     const apiEndpoint = dayApiMapping[dayName];
-    if (!apiEndpoint) {
-      console.log(`${dayName}에 대한 API 엔드포인트가 없습니다.`);
-      return null;
-    }
+    if (!apiEndpoint) return;
 
-    try {
-      const response = await fetch(`/ai/${apiEndpoint}`);
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const rating = await response.text(); // 문자열로 받음
-      return parseInt(rating.trim()); // 숫자로 변환
-    } catch (error) {
-      console.error(`${dayName} AI 평점 로딩 실패:`, error);
-      return null;
-    }
-  }
-
-  // 특정 요일의 평점 UI 업데이트 함수
-  function updateDayRating(dayName, rating) {
-    const dayItem = document.querySelector(`[data-day="${dayName}"]`);
-    if (!dayItem) return;
-
-    const ratingSection = dayItem.querySelector('.rating-section');
+    const ratingSection = document.querySelector('.rating-section');
     const starsContainer = ratingSection.querySelector('.stars');
     const ratingText = ratingSection.querySelector('.rating-text');
 
-    if (rating !== null && rating >= 1 && rating <= 5) {
-      // 성공적으로 평점을 받은 경우
-      ratingSection.className = 'rating-section loaded';
-      updateStars(starsContainer, rating);
-      ratingText.textContent = `${rating}/5`;
-      ratingText.className = 'rating-text loaded';
-    } else {
-      // 평점 로딩 실패한 경우
+    try {
+      const response = await fetch(`/ai/${apiEndpoint}`);
+      const rating = parseInt((await response.text()).trim());
+
+      if (rating >= 1 && rating <= 5) {
+        ratingSection.className = 'rating-section loaded';
+        updateStars(starsContainer, rating);
+        ratingText.textContent = `${rating}/5`;
+        ratingText.className = 'rating-text loaded';
+      } else {
+        ratingSection.className = 'rating-section error';
+        ratingText.textContent = '평가 실패';
+        ratingText.className = 'rating-text error';
+      }
+    } catch {
       ratingSection.className = 'rating-section error';
       ratingText.textContent = '평가 실패';
       ratingText.className = 'rating-text error';
     }
   }
 
-  // 모든 요일의 AI 평점을 순차적으로 로드하는 함수
-  async function loadAllAiRatings() {
-    const dayItems = document.querySelectorAll('[data-day]');
+  function showDay(dayName) {
+    if (!menuData) return;
 
-    for (const dayItem of dayItems) {
-      const dayName = dayItem.getAttribute('data-day');
+    const dayData = menuData.menuDataList.find(day => day.dotw === dayName);
+    if (dayData) {
+      document.querySelectorAll('.day-tab').forEach(tab => tab.classList.remove('active'));
+      document.querySelector(`[data-day="${dayName}"]`).classList.add('active');
 
-      // 각 요일별로 AI 평점 API 호출
-      const rating = await loadAiRating(dayName);
-      updateDayRating(dayName, rating);
+      document.getElementById('skeleton').style.display = 'none';
+      document.getElementById('dayContent').style.display = 'block';
 
-      // 각 API 호출 사이에 짧은 딜레이 (서버 부하 방지)
-      await new Promise(resolve => setTimeout(resolve, 200));
+      renderDayContent(dayData);
+      currentDay = dayName;
     }
   }
 
-  // 로딩 상태 관리
-  function showLoading() {
-    document.getElementById('skeleton').style.display = 'block';
-    document.getElementById('error').style.display = 'none';
-    document.getElementById('menuContainer').style.display = 'none';
-  }
-
-  function hideLoading() {
-    document.getElementById('skeleton').style.display = 'none';
-  }
-
-  function showError() {
-    document.getElementById('error').style.display = 'block';
-    document.getElementById('menuContainer').style.display = 'none';
-  }
-
-  function showMenu() {
-    document.getElementById('error').style.display = 'none';
-    document.getElementById('menuContainer').style.display = 'block';
-  }
-
-  // 메인 로딩 함수 - 순차적으로 처리
   async function loadMenuData() {
-    showLoading();
+    document.getElementById('skeleton').style.display = 'block';
+    document.getElementById('dayContent').style.display = 'none';
 
     try {
-      // 1단계: 먼저 식단 데이터 로드
       const response = await fetch('/start');
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-
-      // 2단계: 식단 데이터 렌더링
-      hideLoading();
-      renderMenuData(data);
-      showMenu();
-
-      // 3단계: 식단이 렌더링된 후 AI 평점 로드 시작
-      await loadAllAiRatings();
-
+      menuData = await response.json();
+      showDay(currentDay || getTodayKorean());
     } catch (error) {
-      console.error('Error loading menu data:', error);
-      hideLoading();
-      showError();
+      console.error('메뉴 데이터 로딩 실패:', error);
     }
   }
 
-  // 페이지 로드 시 데이터 불러오기
   document.addEventListener('DOMContentLoaded', () => {
-    // 메뉴 데이터 로드
+    currentDay = getTodayKorean();
+
+    document.querySelectorAll('.day-tab').forEach(tab => {
+      tab.addEventListener('click', () => showDay(tab.dataset.day));
+    });
+
     loadMenuData();
   });
 </script>
