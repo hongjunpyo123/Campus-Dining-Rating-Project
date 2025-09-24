@@ -24,8 +24,8 @@
     .day-tab:hover { border-color: #6366f1; transform: translateY(-2px); box-shadow: 0 4px 16px rgba(99,102,241,0.2); }
     .day-tab.active { background: #6366f1; color: white; border-color: #6366f1; transform: translateY(-2px); box-shadow: 0 8px 25px rgba(99,102,241,0.4); }
 
-    .day-content { background: white; border-radius: 16px; padding: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid #f1f5f9; animation: fadeIn 0.5s ease; }
-    .day-content::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: #6366f1; }
+    .day-content { background: white; border-radius: 16px; padding: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid #f1f5f9; animation: fadeIn 0.5s ease; position: relative; }
+    .day-content::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: #6366f1; border-radius: 16px 16px 0 0; }
     .day-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid #f1f5f9; }
     .day-title { font-size: 1.5rem; font-weight: 700; color: #1a202c; }
 
@@ -40,9 +40,33 @@
     .rating-text.loaded { color: #92400e; font-weight: 600; }
     .rating-text.error { color: #dc2626; }
 
-    .restaurants-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
-    .restaurant-card { background: white; border-radius: 16px; padding: 20px; transition: all 0.3s ease; box-shadow: 0 4px 20px rgba(0,0,0,0.06); border: 1px solid #f1f5f9; }
-    .restaurant-card:hover { transform: translateY(-4px); box-shadow: 0 8px 32px rgba(0,0,0,0.1); }
+    .card-stack-container { display: flex; justify-content: center; position: relative; height: 400px; margin: 20px 0; }
+    .restaurants-grid { position: relative; width: 340px; height: 100%; }
+    .restaurant-card {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 20px;
+      padding: 24px;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+      cursor: pointer;
+      user-select: none;
+      transform-origin: center bottom;
+    }
+    .restaurant-card:nth-child(1) { background: linear-gradient(135deg, #fef3f2 0%, #fff5f5 100%); z-index: 10; transform: translateY(0px) scale(1); }
+    .restaurant-card:nth-child(2) { background: linear-gradient(135deg, #f0f9ff 0%, #f8fafc 100%); z-index: 9; transform: translateY(-8px) scale(0.98); }
+    .restaurant-card:nth-child(3) { background: linear-gradient(135deg, #f0fdf4 0%, #f7fee7 100%); z-index: 8; transform: translateY(-16px) scale(0.96); }
+    .restaurant-card:nth-child(4) { background: linear-gradient(135deg, #fefce8 0%, #fffbeb 100%); z-index: 7; transform: translateY(-24px) scale(0.94); }
+    .restaurant-card:nth-child(5) { background: linear-gradient(135deg, #fdf4ff 0%, #faf5ff 100%); z-index: 6; transform: translateY(-32px) scale(0.92); }
+
+    .restaurant-card.active {
+      z-index: 15;
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    }
+    .restaurant-card:hover { transform: translateY(-5px) scale(1.01); box-shadow: 0 15px 35px rgba(0,0,0,0.15); }
+
     .restaurant-header { text-align: center; margin-bottom: 16px; }
     .restaurant-title { font-size: 1.2rem; font-weight: 700; color: #1e293b; margin-bottom: 8px; }
     .price-badge { background: #6366f1; color: white; padding: 8px 16px; border-radius: 20px; font-size: 0.9rem; font-weight: 600; display: inline-block; }
@@ -54,6 +78,58 @@
     .menu-item-text { background: #ede9fe; border-radius: 8px; padding: 3px 6px; margin: 2px 0; border: 1px solid #c4b5fd; transition: all 0.2s ease; font-size: 0.7rem; text-align: center; width: 100%; word-break: break-word; line-height: 1.2; min-height: 20px; display: flex; align-items: center; justify-content: center; color: #5b21b6; font-weight: 500; }
     .menu-item-text:hover { background: #6366f1; color: white; transform: scale(1.02); }
     .menu-item-text.empty { background: transparent; color: #9ca3af; border: 1px dashed #d1d5db; font-style: italic; }
+
+    .card-controls {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 20px;
+    }
+    .card-nav-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: none;
+      background: #6366f1;
+      color: white;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(99,102,241,0.3);
+    }
+    .card-nav-btn:hover {
+      background: #4f46e5;
+      transform: scale(1.1);
+      box-shadow: 0 6px 20px rgba(99,102,241,0.4);
+    }
+    .card-nav-btn:disabled {
+      background: #cbd5e1;
+      cursor: not-allowed;
+      transform: scale(1);
+      box-shadow: none;
+    }
+
+    .card-indicators {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .card-indicator {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #cbd5e1;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    .card-indicator.active {
+      background: #6366f1;
+      transform: scale(1.2);
+    }
+
     .no-menu { text-align: center; color: #9ca3af; font-style: italic; padding: 40px; background: #f9fafb; border: 2px dashed #d1d5db; border-radius: 16px; }
 
     .skeleton { background: white; border-radius: 16px; padding: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid #f1f5f9; }
@@ -85,7 +161,8 @@
       .restaurant-image { height: 240px; }
       .day-tabs { flex-wrap: wrap; }
       .day-tab { padding: 10px 20px; font-size: 0.9rem; }
-      .restaurants-grid { grid-template-columns: 1fr; }
+      .restaurants-grid { width: 300px; }
+      .card-stack-container { height: 380px; }
       .food-tray { width: 260px; height: 180px; }
       .menu-item-text { font-size: 0.65rem; padding: 2px 4px; }
       .refresh-btn { bottom: 20px; right: 20px; width: 50px; height: 50px; }
@@ -97,6 +174,8 @@
       .image-overlay h3 { font-size: 1.1rem; }
       .day-header { flex-direction: column; align-items: flex-start; gap: 12px; }
       .rating-section { align-self: flex-end; }
+      .restaurants-grid { width: 280px; }
+      .card-stack-container { height: 360px; }
       .food-tray { width: 240px; height: 160px; }
       .menu-item-text { font-size: 0.6rem; padding: 2px 3px; }
     }
@@ -166,7 +245,7 @@
 
 <button class="refresh-btn" onclick="loadMenuData()">
   <svg class="refresh-icon" viewBox="0 0 24 24">
-    <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+    <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
   </svg>
 </button>
 
@@ -174,6 +253,7 @@
   const dayApiMapping = { '월요일': 'monday', '화요일': 'tuesday', '수요일': 'wednesday', '목요일': 'thursday', '금요일': 'friday' };
   let menuData = null;
   let currentDay = '';
+  let currentCardIndex = 0;
 
   function getTodayKorean() {
     const days = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
@@ -216,6 +296,50 @@
     });
   }
 
+  function updateCardStack(totalCards) {
+    const cards = document.querySelectorAll('.restaurant-card');
+    const prevBtn = document.querySelector('.prev-btn');
+    const nextBtn = document.querySelector('.next-btn');
+    const indicators = document.querySelectorAll('.card-indicator');
+
+    cards.forEach((card, index) => {
+      card.classList.remove('active');
+      if (index === currentCardIndex) {
+        card.classList.add('active');
+        card.style.zIndex = 15;
+      } else {
+        const offset = Math.abs(index - currentCardIndex);
+        card.style.zIndex = 10 - offset;
+      }
+    });
+
+    if (prevBtn) prevBtn.disabled = currentCardIndex === 0;
+    if (nextBtn) nextBtn.disabled = currentCardIndex === totalCards - 1;
+
+    indicators.forEach((indicator, index) => {
+      indicator.classList.toggle('active', index === currentCardIndex);
+    });
+  }
+
+  function nextCard(totalCards) {
+    if (currentCardIndex < totalCards - 1) {
+      currentCardIndex++;
+      updateCardStack(totalCards);
+    }
+  }
+
+  function prevCard() {
+    if (currentCardIndex > 0) {
+      currentCardIndex--;
+      updateCardStack(document.querySelectorAll('.restaurant-card').length);
+    }
+  }
+
+  function goToCard(index) {
+    currentCardIndex = index;
+    updateCardStack(document.querySelectorAll('.restaurant-card').length);
+  }
+
   function renderDayContent(dayData) {
     const container = document.getElementById('dayContent');
     container.innerHTML = '';
@@ -241,15 +365,20 @@
     dayHeader.appendChild(ratingSection);
     container.appendChild(dayHeader);
 
-    const restaurantsGrid = document.createElement('div');
-    restaurantsGrid.className = 'restaurants-grid';
-
     if (!dayData.menus || dayData.menus.length === 0) {
       const noMenu = document.createElement('div');
       noMenu.className = 'no-menu';
       noMenu.textContent = '운영하지 않습니다';
-      restaurantsGrid.appendChild(noMenu);
+      container.appendChild(noMenu);
     } else {
+      currentCardIndex = 0;
+
+      const stackContainer = document.createElement('div');
+      stackContainer.className = 'card-stack-container';
+
+      const restaurantsGrid = document.createElement('div');
+      restaurantsGrid.className = 'restaurants-grid';
+
       dayData.menus.forEach(menu => {
         if (!menu.title) return;
 
@@ -307,35 +436,60 @@
         restaurantCard.appendChild(trayContainer);
         restaurantsGrid.appendChild(restaurantCard);
       });
+
+      stackContainer.appendChild(restaurantsGrid);
+
+      const cardControls = document.createElement('div');
+      cardControls.className = 'card-controls';
+
+      const prevBtn = document.createElement('button');
+      prevBtn.className = 'card-nav-btn prev-btn';
+      prevBtn.innerHTML = '←';
+      prevBtn.onclick = () => prevCard();
+
+      const nextBtn = document.createElement('button');
+      nextBtn.className = 'card-nav-btn next-btn';
+      nextBtn.innerHTML = '→';
+      nextBtn.onclick = () => nextCard(dayData.menus.length);
+
+      cardControls.appendChild(prevBtn);
+      cardControls.appendChild(nextBtn);
+
+      const indicators = document.createElement('div');
+      indicators.className = 'card-indicators';
+
+      dayData.menus.forEach((_, index) => {
+        const indicator = document.createElement('div');
+        indicator.className = 'card-indicator';
+        indicator.onclick = () => goToCard(index);
+        indicators.appendChild(indicator);
+      });
+
+      container.appendChild(stackContainer);
+      container.appendChild(cardControls);
+      container.appendChild(indicators);
+
+      setTimeout(() => updateCardStack(dayData.menus.length), 100);
     }
 
-    container.appendChild(restaurantsGrid);
     loadAiRating(dayData.dotw);
   }
 
   async function loadAiRating(dayName) {
     const apiEndpoint = dayApiMapping[dayName];
-    if (!apiEndpoint) return;
-
     const ratingSection = document.querySelector('.rating-section');
     const starsContainer = ratingSection.querySelector('.stars');
     const ratingText = ratingSection.querySelector('.rating-text');
 
-    try {
-      const response = await fetch(`/ai/${apiEndpoint}`);
-      const rating = parseInt((await response.text()).trim());
+    const response = await fetch(`/ai/${apiEndpoint}`);
+    const rating = parseInt((await response.text()).trim());
 
-      if (rating >= 1 && rating <= 5) {
-        ratingSection.className = 'rating-section loaded';
-        updateStars(starsContainer, rating);
-        ratingText.textContent = `${rating}/5`;
-        ratingText.className = 'rating-text loaded';
-      } else {
-        ratingSection.className = 'rating-section error';
-        ratingText.textContent = '평가 실패';
-        ratingText.className = 'rating-text error';
-      }
-    } catch {
+    if (rating >= 1 && rating <= 5) {
+      ratingSection.className = 'rating-section loaded';
+      updateStars(starsContainer, rating);
+      ratingText.textContent = `${rating}/5`;
+      ratingText.className = 'rating-text loaded';
+    } else {
       ratingSection.className = 'rating-section error';
       ratingText.textContent = '평가 실패';
       ratingText.className = 'rating-text error';
@@ -362,13 +516,9 @@
     document.getElementById('skeleton').style.display = 'block';
     document.getElementById('dayContent').style.display = 'none';
 
-    try {
-      const response = await fetch('/start');
-      menuData = await response.json();
-      showDay(currentDay || getTodayKorean());
-    } catch (error) {
-      console.error('메뉴 데이터 로딩 실패:', error);
-    }
+    const response = await fetch('/start');
+    menuData = await response.json();
+    showDay(currentDay || getTodayKorean());
   }
 
   document.addEventListener('DOMContentLoaded', () => {

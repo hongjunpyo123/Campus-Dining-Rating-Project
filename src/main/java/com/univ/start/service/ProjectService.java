@@ -142,6 +142,9 @@ public class ProjectService {
 
   public void parseMenuData(String fullText, MenuData.Menu menu) {
     try {
+
+      System.out.println("fullText = " + fullText);
+
       String[] lines = fullText.split("\n");
       String firstLine = lines[0];
       String title = firstLine.substring(firstLine.indexOf("["), firstLine.indexOf("]") + 1);
